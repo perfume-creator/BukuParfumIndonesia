@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#142e6e"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bf953f"/>
+      <stop offset="50%" stop-color="#fcbf49"/>
+      <stop offset="100%" stop-color="#b38728"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded background -->
+  <rect width="96" height="96" rx="20" fill="url(#bg)"/>
+  <!-- Perfume bottle silhouette -->
+  <g transform="translate(48,48)">
+    <!-- Bottle body -->
+    <rect x="-12" y="-8" width="24" height="32" rx="4" fill="url(#gold)" opacity="0.9"/>
+    <!-- Bottle neck -->
+    <rect x="-6" y="-18" width="12" height="12" rx="2" fill="url(#gold)" opacity="0.9"/>
+    <!-- Bottle cap -->
+    <rect x="-8" y="-26" width="16" height="10" rx="3" fill="url(#gold)"/>
+    <!-- Spray mist -->
+    <circle cx="0" cy="-32" r="2" fill="#fcbf49" opacity="0.6"/>
+    <circle cx="-5" cy="-36" r="1.5" fill="#fcbf49" opacity="0.4"/>
+    <circle cx="5" cy="-35" r="1.5" fill="#fcbf49" opacity="0.4"/>
+    <circle cx="-2" cy="-39" r="1" fill="#fcbf49" opacity="0.3"/>
+    <circle cx="3" cy="-40" r="1" fill="#fcbf49" opacity="0.3"/>
+    <!-- Shine effect -->
+    <rect x="-9" y="-5" width="3" height="20" rx="1.5" fill="white" opacity="0.2"/>
+  </g>
+</svg>

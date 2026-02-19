@@ -1,11 +1,20 @@
 <?php
 
+// Show all errors
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
+
 // Set storage paths to /tmp (writable in serverless)
 $_ENV['APP_STORAGE'] = '/tmp/storage';
 $_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/views';
 $_ENV['CACHE_STORE'] = 'array';
 $_ENV['SESSION_DRIVER'] = 'array';
 $_ENV['LOG_CHANNEL'] = 'stderr';
+$_ENV['APP_CONFIG_CACHE'] = '/tmp/storage/config.php';
+$_ENV['APP_ROUTES_CACHE'] = '/tmp/storage/routes.php';
+$_ENV['APP_EVENTS_CACHE'] = '/tmp/storage/events.php';
+$_ENV['APP_SERVICES_CACHE'] = '/tmp/storage/services.php';
+$_ENV['APP_PACKAGES_CACHE'] = '/tmp/storage/packages.php';
 
 // Create necessary directories in /tmp
 $dirs = [
@@ -25,22 +34,33 @@ foreach ($dirs as $dir) {
     }
 }
 
-// Autoload composer dependencies
-require __DIR__ . '/../vendor/autoload.php';
+try {
+    // Check if vendor/autoload.php exists
+    $autoloadPath = __DIR__ . '/../vendor/autoload.php';
+    if (!file_exists($autoloadPath)) {
+        echo "ERROR: vendor/autoload.php not found at: " . $autoloadPath;
+        echo "\n\nDirectory listing of " . __DIR__ . "/../:\n";
+        $files = scandir(__DIR__ . '/../');
+        echo implode("\n", $files);
+        exit(1);
+    }
 
-// Bootstrap Laravel application
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+    require $autoloadPath;
 
-// Override storage path to /tmp
-$app->useStoragePath('/tmp/storage');
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
+    $app->useStoragePath('/tmp/storage');
 
-// Run the application
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
+    $response = $kernel->handle(
+        $request = Illuminate\Http\Request::capture()
+    );
 
-$response->send();
+    $response->send();
+    $kernel->terminate($request, $response);
 
-$kernel->terminate($request, $response);
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<h1>Error</h1>";
+    echo "<pre>" . $e->getMessage() . "\n\n" . $e->getTraceAsString() . "</pre>";
+}
